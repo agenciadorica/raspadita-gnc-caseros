@@ -72,8 +72,8 @@ export default function RaspaditaClient() {
         <Image
           src="/logo.jpg"
           alt="GNC Caseros"
-          width={150}
-          height={137}
+          width={205}
+          height={187}
           className="object-contain rounded-full"
           priority
         />

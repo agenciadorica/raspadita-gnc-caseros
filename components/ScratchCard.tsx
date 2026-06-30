@@ -108,7 +108,7 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
   }, [scratch])
 
   return (
-    <div className="relative w-full max-w-sm mx-auto select-none">
+    <div className="relative w-full max-w-[300px] mx-auto select-none">
       {/* Prize content underneath */}
       <div
         className={`absolute inset-0 flex flex-col items-center justify-center rounded-2xl transition-opacity duration-500 ${
@@ -116,7 +116,7 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
             ? 'bg-gradient-to-br from-brand-primary to-violet-700'
             : 'bg-gradient-to-br from-gray-700 to-black'
         }`}
-        style={{ minHeight: 220 }}
+        style={{ minHeight: 420 }}
       >
         {resultado === 'ganador' ? (
           <>
@@ -137,10 +137,10 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
       {/* Scratch overlay canvas */}
       <canvas
         ref={canvasRef}
-        width={360}
-        height={220}
+        width={300}
+        height={420}
         className={`relative w-full rounded-2xl cursor-crosshair touch-none ${revealed ? 'opacity-0 pointer-events-none' : ''}`}
-        style={{ display: 'block', minHeight: 220 }}
+        style={{ display: 'block', minHeight: 420 }}
       />
     </div>
   )
