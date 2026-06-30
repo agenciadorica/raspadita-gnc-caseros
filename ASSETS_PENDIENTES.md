@@ -2,9 +2,9 @@
 
 ## Logo
 
-✅ Resuelto — `/public/logo.svg` (círculo violeta sólido, "GNC" en negro con borde blanco arriba, "CASEROS" en negro con borde blanco abajo).
+✅ Resuelto — `/public/logo.jpg` (foto real del logo provista por la cliente: círculo violeta sólido, "GNC" en negro con borde blanco arriba, "CASEROS" en negro con borde blanco abajo). Referenciado desde `app/RaspaditaClient.tsx`.
 
-> Nota: a esta conversación no se adjuntó un archivo de imagen real, solo la descripción del logo. El SVG actual es una reconstrucción vectorial fiel a esa descripción. Si la cliente tiene el archivo original (PNG/SVG/AI exportado), reemplazar `/public/logo.svg` por ese archivo para asegurar fidelidad exacta de tipografía y proporciones.
+> Es una foto del sticker/cartel físico (no un archivo vectorial con fondo transparente). Si más adelante la cliente consigue el archivo de diseño original (PNG transparente o vector), reemplazar `/public/logo.jpg` por ese archivo para mejor nitidez en pantallas grandes.
 
 ## Foto de fondo
 

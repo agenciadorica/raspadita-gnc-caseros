@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { getFingerprint } from '@/lib/fingerprint'
 import ScratchCard from '@/components/ScratchCard'
 import ResultWin from '@/components/ResultWin'
@@ -68,8 +69,14 @@ export default function RaspaditaClient() {
     <div className="min-h-dvh flex flex-col items-center bg-gradient-to-b from-violet-50 to-white px-4 py-6">
       {/* Header */}
       <header className="w-full max-w-sm flex flex-col items-center gap-3 mb-6">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="GNC Caseros" width={140} height={140} className="object-contain" />
+        <Image
+          src="/logo.jpg"
+          alt="GNC Caseros"
+          width={150}
+          height={137}
+          className="object-contain rounded-full"
+          priority
+        />
         <h1 className="text-2xl font-extrabold text-brand-primary text-center">GNC Caseros</h1>
       </header>
 
