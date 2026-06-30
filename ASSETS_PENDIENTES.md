@@ -1,27 +1,34 @@
 # Assets Pendientes
 
-Reemplazar los archivos placeholder con los assets reales antes del deploy a producción.
+## Logo
 
-## Imágenes
+✅ Resuelto — `/public/logo.svg` (círculo violeta sólido, "GNC" en negro con borde blanco arriba, "CASEROS" en negro con borde blanco abajo).
+
+> Nota: a esta conversación no se adjuntó un archivo de imagen real, solo la descripción del logo. El SVG actual es una reconstrucción vectorial fiel a esa descripción. Si la cliente tiene el archivo original (PNG/SVG/AI exportado), reemplazar `/public/logo.svg` por ese archivo para asegurar fidelidad exacta de tipografía y proporciones.
+
+## Foto de fondo
+
+Pendiente (opcional). Por ahora la pantalla usa un fondo limpio con la paleta violeta/blanco de la marca (`bg-gradient-to-b from-violet-50 to-white` en `app/RaspaditaClient.tsx`). Si la cliente envía una foto del local, se puede agregar como `/public/bg.jpg` y usarla de fondo.
 
 | Archivo | Descripción | Especificaciones |
 |---------|-------------|-----------------|
-| `/public/logo-placeholder.png` → `/public/logo.png` | Logo de GNC Caseros | Fondo transparente, mínimo 300×100 px, formato PNG |
-| `/public/bg-placeholder.jpg` → `/public/bg.jpg` | Imagen de fondo o textura | 1080×1920 px (vertical/mobile), formato JPG |
+| `/public/bg-placeholder.jpg` → `/public/bg.jpg` | Foto del local (opcional) | 1080×1920 px (vertical/mobile), formato JPG |
 
 ## Colores de marca
 
-Una vez confirmados los colores oficiales, actualizar en `app/globals.css`:
+Definidos en `app/globals.css`:
 
 ```css
 @theme inline {
-  --color-brand-primary: #f59e0b;   /* ← reemplazar con color primario real */
-  --color-brand-secondary: #1e40af; /* ← reemplazar con color secundario real */
+  --color-brand-primary: #5b2d8e;      /* violeta del logo */
+  --color-brand-primary-dark: #432268; /* hover/active */
+  --color-brand-secondary: #ffffff;    /* blanco */
+  --color-brand-accent: #000000;       /* negro */
 }
 ```
 
-Y actualizar los colores en los componentes que usen clases hardcodeadas como `bg-yellow-400`, `bg-blue-600`, etc.
+Si la cliente confirma un tono violeta distinto extraído del archivo de logo real, ajustar `--color-brand-primary` (y `-dark`, un ~25% más oscuro para estados hover).
 
-## Referencias en el código
+## Franjas horarias
 
-- `app/RaspaditaClient.tsx` — usa `logo-placeholder.png`; cambiar `src` a `/logo.png` cuando esté disponible
+Editables desde `/admin` sin tocar código: cupo de premios por franja de 2hs, y los parámetros `probabilidad_base` / `incremento_por_jugada` del sorteo progresivo. Ver `supabase/migration_franjas_horarias.sql` para aplicar el esquema nuevo sobre la base existente.

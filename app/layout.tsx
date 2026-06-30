@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "GNC Caseros",
-  description: "¡Raspá y descubrí si ganaste una carga de GNC gratis!",
+  description: "¡Raspá y descubrí si ganaste la carga que acabás de hacer, gratis!",
 };
 
 export const viewport: Viewport = {

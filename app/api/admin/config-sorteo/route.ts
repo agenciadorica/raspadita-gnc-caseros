@@ -13,7 +13,12 @@ export async function GET(request: NextRequest) {
   }
 
   const db = createServiceClient()
-  const { data } = await db.from('config').select('*').eq('id', 1).single()
+  const { data } = await db
+    .from('config_sorteo')
+    .select('probabilidad_base, incremento_por_jugada')
+    .eq('id', 1)
+    .single()
+
   return Response.json(data)
 }
 
@@ -23,12 +28,21 @@ export async function PUT(request: NextRequest) {
   }
 
   const body = await request.json()
-  const { activo } = body
+  const { probabilidad_base, incremento_por_jugada } = body
+
+  if (
+    typeof probabilidad_base !== 'number' ||
+    typeof incremento_por_jugada !== 'number' ||
+    probabilidad_base < 0 || probabilidad_base > 1 ||
+    incremento_por_jugada < 0 || incremento_por_jugada > 1
+  ) {
+    return Response.json({ error: 'datos inválidos' }, { status: 400 })
+  }
 
   const db = createServiceClient()
   const { data, error } = await db
-    .from('config')
-    .update({ activo })
+    .from('config_sorteo')
+    .update({ probabilidad_base, incremento_por_jugada })
     .eq('id', 1)
     .select()
     .single()

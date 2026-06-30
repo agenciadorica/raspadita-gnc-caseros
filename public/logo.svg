@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <circle cx="150" cy="150" r="145" fill="#5B2D8E" />
+  <text
+    x="150"
+    y="155"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="900"
+    font-size="86"
+    fill="#000000"
+    stroke="#FFFFFF"
+    stroke-width="6"
+    paint-order="stroke fill"
+  >GNC</text>
+  <text
+    x="150"
+    y="215"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="900"
+    font-size="38"
+    letter-spacing="2"
+    fill="#000000"
+    stroke="#FFFFFF"
+    stroke-width="4"
+    paint-order="stroke fill"
+  >CASEROS</text>
+</svg>

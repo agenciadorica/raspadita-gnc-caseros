@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
+import { getArgentinaDateString } from '@/lib/franjas'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,14 +11,13 @@ export async function GET(request: NextRequest) {
   }
 
   const db = createServiceClient()
-  const today = new Date().toISOString().split('T')[0]
+  const today = getArgentinaDateString()
 
-  const [{ count: totalJugadas }, { count: totalGanadores }, { count: canjeados }, { data: config }] =
+  const [{ count: totalJugadas }, { count: totalGanadores }, { count: canjeados }] =
     await Promise.all([
       db.from('jugadas').select('*', { count: 'exact', head: true }).eq('fecha', today),
       db.from('jugadas').select('*', { count: 'exact', head: true }).eq('fecha', today).eq('gano', true),
       db.from('jugadas').select('*', { count: 'exact', head: true }).eq('fecha', today).eq('gano', true).eq('canjeado', true),
-      db.from('config').select('premios_por_dia').eq('id', 1).single(),
     ])
 
   return Response.json({
@@ -25,7 +25,5 @@ export async function GET(request: NextRequest) {
     totalJugadas: totalJugadas ?? 0,
     totalGanadores: totalGanadores ?? 0,
     canjeados: canjeados ?? 0,
-    premiosPorDia: config?.premios_por_dia ?? 8,
-    premiosRestantes: (config?.premios_por_dia ?? 8) - (totalGanadores ?? 0),
   })
 }

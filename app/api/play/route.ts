@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
+import { getArgentinaDateString, getArgentinaHour, getFranjaInicio } from '@/lib/franjas'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,24 +22,23 @@ export async function POST(request: NextRequest) {
   }
 
   const db = createServiceClient()
-  const today = new Date().toISOString().split('T')[0]
+  const hoy = getArgentinaDateString()
 
-  // Check if device already played today
+  // 1 jugada por dispositivo por día
   const { data: existing } = await db
     .from('jugadas')
-    .select('id, gano, codigo_premio')
+    .select('id')
     .eq('fingerprint', fingerprint)
-    .eq('fecha', today)
+    .eq('fecha', hoy)
     .maybeSingle()
 
   if (existing) {
     return Response.json({ status: 'already_played' })
   }
 
-  // Get config
   const { data: config } = await db
     .from('config')
-    .select('premios_por_dia, activo')
+    .select('activo')
     .eq('id', 1)
     .single()
 
@@ -46,38 +46,54 @@ export async function POST(request: NextRequest) {
     return Response.json({ status: 'inactive' })
   }
 
-  // Count prizes given today
-  const { count: premiosHoy } = await db
-    .from('jugadas')
-    .select('*', { count: 'exact', head: true })
-    .eq('fecha', today)
-    .eq('gano', true)
+  // Franja horaria actual (hora argentina)
+  const horaInicio = getFranjaInicio(getArgentinaHour())
+  const horaFin = horaInicio + 2
+  const { data: franja } = await db
+    .from('franjas_horarias')
+    .select('id, premios_cupo, activa')
+    .eq('hora_inicio', horaInicio)
+    .eq('hora_fin', horaFin)
+    .maybeSingle()
 
-  const premiosRestantes = config.premios_por_dia - (premiosHoy ?? 0)
+  let gano = false
+  let codigoPremio: string | null = null
 
-  if (premiosRestantes <= 0) {
-    return Response.json({ status: 'limit_reached' })
+  if (franja?.activa) {
+    const { count: premiosEntregados } = await db
+      .from('jugadas')
+      .select('*', { count: 'exact', head: true })
+      .eq('fecha', hoy)
+      .eq('franja_id', franja.id)
+      .eq('gano', true)
+
+    if ((premiosEntregados ?? 0) < franja.premios_cupo) {
+      const { count: jugadasSinPremio } = await db
+        .from('jugadas')
+        .select('*', { count: 'exact', head: true })
+        .eq('fecha', hoy)
+        .eq('franja_id', franja.id)
+        .eq('gano', false)
+
+      const { data: configSorteo } = await db
+        .from('config_sorteo')
+        .select('probabilidad_base, incremento_por_jugada')
+        .eq('id', 1)
+        .single()
+
+      const base = configSorteo?.probabilidad_base ?? 0.05
+      const incremento = configSorteo?.incremento_por_jugada ?? 0.05
+      const probabilidad = Math.min(0.95, base + (jugadasSinPremio ?? 0) * incremento)
+
+      gano = Math.random() < probabilidad
+      codigoPremio = gano ? generateCode() : null
+    }
   }
-
-  // Progressive probability: increases as day goes on
-  const now = new Date()
-  const horaActual = now.getHours() + now.getMinutes() / 60
-  const horasCierre = 22
-  const horasApertura = 8
-  const horasTotales = horasCierre - horasApertura
-  const horasTranscurridas = Math.max(0, horaActual - horasApertura)
-  const fraccionDia = Math.min(1, horasTranscurridas / horasTotales)
-
-  // Estimate remaining plays: assume ~50 plays per day, adjust by time
-  const jugadasEstimadas = Math.max(premiosRestantes, Math.round(50 * (1 - fraccionDia)))
-  const probabilidad = Math.min(0.95, premiosRestantes / jugadasEstimadas)
-
-  const gano = Math.random() < probabilidad
-  const codigoPremio = gano ? generateCode() : null
 
   const { error } = await db.from('jugadas').insert({
     fingerprint,
-    fecha: today,
+    fecha: hoy,
+    franja_id: franja?.id ?? null,
     gano,
     codigo_premio: codigoPremio,
   })

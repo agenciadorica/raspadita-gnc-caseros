@@ -1,13 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { getFingerprint } from '@/lib/fingerprint'
 import ScratchCard from '@/components/ScratchCard'
 import ResultWin from '@/components/ResultWin'
 import ResultLose from '@/components/ResultLose'
 import AlreadyPlayed from '@/components/AlreadyPlayed'
-import DailyLimitReached from '@/components/DailyLimitReached'
 
 type AppState =
   | 'loading'
@@ -16,7 +14,6 @@ type AppState =
   | 'win'
   | 'lose'
   | 'already_played'
-  | 'limit_reached'
   | 'inactive'
   | 'error'
 
@@ -49,8 +46,6 @@ export default function RaspaditaClient() {
 
       if (data.status === 'already_played') {
         setAppState('already_played')
-      } else if (data.status === 'limit_reached') {
-        setAppState('limit_reached')
       } else if (data.status === 'inactive') {
         setAppState('inactive')
       } else if (data.status === 'ok') {
@@ -70,41 +65,34 @@ export default function RaspaditaClient() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col items-center bg-gradient-to-b from-blue-50 to-white px-4 py-6">
+    <div className="min-h-dvh flex flex-col items-center bg-gradient-to-b from-violet-50 to-white px-4 py-6">
       {/* Header */}
       <header className="w-full max-w-sm flex flex-col items-center gap-3 mb-6">
-        <Image
-          src="/logo-placeholder.png"
-          alt="GNC Caseros"
-          width={200}
-          height={67}
-          className="object-contain"
-          priority
-        />
-        <h1 className="text-2xl font-extrabold text-blue-900 text-center">GNC Caseros</h1>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.svg" alt="GNC Caseros" width={140} height={140} className="object-contain" />
+        <h1 className="text-2xl font-extrabold text-brand-primary text-center">GNC Caseros</h1>
       </header>
 
       {/* Main content */}
       <main className="w-full max-w-sm flex flex-col items-center gap-6 flex-1">
         {appState === 'loading' && (
           <div className="flex flex-col items-center gap-4 py-16">
-            <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin" />
+            <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin" />
             <p className="text-gray-500">Cargando...</p>
           </div>
         )}
 
         {appState === 'ready' && (
           <div className="flex flex-col items-center gap-6 w-full animate-fade-in">
-            <div className="bg-white rounded-2xl shadow-lg p-6 w-full text-center border border-blue-100">
+            <div className="bg-white rounded-2xl shadow-lg p-6 w-full text-center border border-violet-100">
               <p className="text-xl font-bold text-gray-800 leading-snug">
-                ¡Raspá y descubrí si ganaste una carga de GNC gratis!
+                ¡Raspá y descubrí si ganaste la carga que acabás de hacer, gratis!
               </p>
-              <p className="text-gray-500 mt-2 text-sm">Se entregan hasta 8 cargas por día.</p>
             </div>
             <button
               onClick={handlePlay}
               disabled={isPlaying}
-              className="w-full py-5 rounded-2xl bg-yellow-400 hover:bg-yellow-500 active:scale-95 text-gray-900 font-extrabold text-xl shadow-lg transition-all disabled:opacity-60"
+              className="w-full py-5 rounded-2xl bg-brand-primary hover:bg-brand-primary-dark active:scale-95 text-white font-extrabold text-xl shadow-lg transition-all disabled:opacity-60"
             >
               {isPlaying ? 'Preparando...' : '¡Jugar ahora!'}
             </button>
@@ -133,8 +121,6 @@ export default function RaspaditaClient() {
 
         {appState === 'already_played' && <AlreadyPlayed />}
 
-        {appState === 'limit_reached' && <DailyLimitReached />}
-
         {appState === 'inactive' && (
           <div className="flex flex-col items-center gap-4 py-8 text-center">
             <div className="text-6xl">🔧</div>
@@ -148,7 +134,7 @@ export default function RaspaditaClient() {
             <p className="text-gray-600 text-xl font-semibold">Algo salió mal. Intentá de nuevo.</p>
             <button
               onClick={() => { setAppState('ready'); setIsPlaying(false) }}
-              className="px-6 py-3 rounded-xl bg-blue-500 text-white font-bold"
+              className="px-6 py-3 rounded-xl bg-brand-primary text-white font-bold"
             >
               Reintentar
             </button>
@@ -157,7 +143,7 @@ export default function RaspaditaClient() {
       </main>
 
       <footer className="mt-8 text-xs text-gray-400 text-center">
-        GNC Caseros &mdash; Promoción válida sujeta a disponibilidad diaria
+        GNC Caseros &mdash; Promoción válida sujeta a disponibilidad
       </footer>
     </div>
   )

@@ -113,8 +113,8 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
       <div
         className={`absolute inset-0 flex flex-col items-center justify-center rounded-2xl transition-opacity duration-500 ${
           resultado === 'ganador'
-            ? 'bg-gradient-to-br from-yellow-400 to-orange-400'
-            : 'bg-gradient-to-br from-blue-400 to-indigo-500'
+            ? 'bg-gradient-to-br from-brand-primary to-violet-700'
+            : 'bg-gradient-to-br from-gray-700 to-black'
         }`}
         style={{ minHeight: 220 }}
       >
