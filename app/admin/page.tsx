@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { getFingerprint } from '@/lib/fingerprint'
 
 interface Stats {
   fecha: string
@@ -45,6 +46,9 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false)
   const [savingSorteo, setSavingSorteo] = useState(false)
   const [savingFranjaId, setSavingFranjaId] = useState<number | null>(null)
+  const [resettingDevice, setResettingDevice] = useState(false)
+  const [resettingAll, setResettingAll] = useState(false)
+  const [resetMessage, setResetMessage] = useState<string | null>(null)
 
   const fetchData = useCallback(async (pwd: string) => {
     const headers = { 'x-admin-password': pwd }
@@ -106,6 +110,52 @@ export default function AdminPage() {
     })
     await fetchData(password)
     setSavingFranjaId(null)
+  }
+
+  async function handleResetDevice() {
+    setResettingDevice(true)
+    setResetMessage(null)
+    try {
+      const fingerprint = await getFingerprint()
+      const res = await fetch('/api/admin/reset-device', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ fingerprint }),
+      })
+      const data = await res.json()
+      setResetMessage(
+        res.ok
+          ? `Se borraron ${data.jugadas_borradas} jugada(s) de hoy para este dispositivo.`
+          : data.error ?? 'Error al resetear'
+      )
+    } finally {
+      setResettingDevice(false)
+      await fetchData(password)
+    }
+  }
+
+  async function handleResetAll() {
+    if (!confirm('¿Seguro que querés borrar TODAS las jugadas de hoy? Esta acción no se puede deshacer.')) {
+      return
+    }
+    setResettingAll(true)
+    setResetMessage(null)
+    try {
+      const res = await fetch('/api/admin/reset-device', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ todas: true }),
+      })
+      const data = await res.json()
+      setResetMessage(
+        res.ok
+          ? `Se borraron ${data.jugadas_borradas} jugada(s) de hoy en total.`
+          : data.error ?? 'Error al resetear'
+      )
+    } finally {
+      setResettingAll(false)
+      await fetchData(password)
+    }
   }
 
   async function handleVerify(e: React.FormEvent) {
@@ -268,6 +318,32 @@ export default function AdminPage() {
             </button>
           </form>
         )}
+
+        {/* Modo prueba */}
+        <div className="bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
+          <h2 className="text-lg font-bold text-gray-700">Modo prueba</h2>
+          <button
+            type="button"
+            onClick={handleResetDevice}
+            disabled={resettingDevice}
+            className="bg-black text-white rounded-xl py-3 font-bold hover:opacity-80 transition disabled:opacity-60"
+          >
+            {resettingDevice ? 'Reseteando...' : 'Resetear mi dispositivo (modo prueba)'}
+          </button>
+          <button
+            type="button"
+            onClick={handleResetAll}
+            disabled={resettingAll}
+            className="bg-red-600 text-white rounded-xl py-3 font-bold hover:bg-red-700 transition disabled:opacity-60"
+          >
+            {resettingAll ? 'Reseteando...' : 'Resetear TODAS las jugadas de hoy'}
+          </button>
+          {resetMessage && (
+            <div className="rounded-xl px-4 py-3 font-semibold bg-blue-100 text-blue-700">
+              {resetMessage}
+            </div>
+          )}
+        </div>
 
         {/* Verify code */}
         <form onSubmit={handleVerify} className="bg-white rounded-2xl shadow p-6 flex flex-col gap-4">
