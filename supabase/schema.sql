@@ -13,18 +13,17 @@ create table config_sorteo (
 );
 insert into config_sorteo (id, probabilidad_base, incremento_por_jugada) values (1, 0.05, 0.05);
 
--- Franjas horarias (12 franjas de 2hs, cubren las 24hs del día)
+-- Franjas horarias (3 franjas de 8hs, cubren las 24hs del día; 22-6 cruza medianoche)
 create table franjas_horarias (
   id serial primary key,
-  hora_inicio int not null,  -- 0, 2, 4, ..., 22
-  hora_fin int not null,     -- 2, 4, 6, ..., 24
+  hora_inicio int not null,  -- 6, 14, 22
+  hora_fin int not null,     -- 14, 22, 6
   premios_cupo int not null default 0,
   activa boolean not null default true
 );
 
 insert into franjas_horarias (hora_inicio, hora_fin, premios_cupo) values
-(0,2,0),(2,4,0),(4,6,0),(6,8,0),(8,10,0),
-(10,12,2),(12,14,0),(14,16,0),(16,18,2),(18,20,0),(20,22,0),(22,24,1);
+(6,14,2),(14,22,2),(22,6,0);
 
 -- Jugadas
 create table jugadas (

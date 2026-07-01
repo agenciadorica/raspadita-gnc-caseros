@@ -80,11 +80,11 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     ctx.fillStyle = '#6b7280'
-    ctx.font = 'bold 18px Arial'
+    ctx.font = 'bold 25px Arial'
     ctx.textAlign = 'center'
-    ctx.fillText('¡RASPÁ AQUÍ!', canvas.width / 2, canvas.height / 2 - 10)
-    ctx.font = '14px Arial'
-    ctx.fillText('Deslizá el dedo', canvas.width / 2, canvas.height / 2 + 14)
+    ctx.fillText('¡RASPÁ AQUÍ!', canvas.width / 2, canvas.height / 2 - 12)
+    ctx.font = '19px Arial'
+    ctx.fillText('Deslizá el dedo', canvas.width / 2, canvas.height / 2 + 18)
 
     const handleStart = () => { isScratching.current = true }
     const handleEnd = () => { isScratching.current = false }
@@ -108,7 +108,7 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
   }, [scratch])
 
   return (
-    <div className="relative w-full max-w-[300px] mx-auto select-none">
+    <div className="relative w-full max-w-[280px] mx-auto select-none">
       {/* Prize content underneath */}
       <div
         className={`absolute inset-0 flex flex-col items-center justify-center rounded-2xl transition-opacity duration-500 ${
@@ -116,7 +116,7 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
             ? 'bg-gradient-to-br from-brand-primary to-violet-700'
             : 'bg-gradient-to-br from-gray-700 to-black'
         }`}
-        style={{ minHeight: 420 }}
+        style={{ minHeight: 380 }}
       >
         {resultado === 'ganador' ? (
           <>
@@ -137,10 +137,10 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
       {/* Scratch overlay canvas */}
       <canvas
         ref={canvasRef}
-        width={300}
-        height={420}
+        width={280}
+        height={380}
         className={`relative w-full rounded-2xl cursor-crosshair touch-none ${revealed ? 'opacity-0 pointer-events-none' : ''}`}
-        style={{ display: 'block', minHeight: 420 }}
+        style={{ display: 'block', minHeight: 380 }}
       />
     </div>
   )

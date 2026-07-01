@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
-import { getArgentinaDateString, getArgentinaHour, getFranjaInicio } from '@/lib/franjas'
+import { getArgentinaDateString, getArgentinaHour, getFranjaActual } from '@/lib/franjas'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,8 +47,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Franja horaria actual (hora argentina)
-  const horaInicio = getFranjaInicio(getArgentinaHour())
-  const horaFin = horaInicio + 2
+  const { horaInicio, horaFin } = getFranjaActual(getArgentinaHour())
   const { data: franja } = await db
     .from('franjas_horarias')
     .select('id, premios_cupo, activa')

@@ -21,7 +21,10 @@ export function getArgentinaHour(date: Date = new Date()): number {
   return parseInt(hourStr, 10) % 24
 }
 
-/** Devuelve el inicio (par, 0-22) de la franja horaria de 2hs que contiene la hora dada */
-export function getFranjaInicio(hour: number): number {
-  return Math.floor(hour / 2) * 2
+/** Devuelve el inicio y fin (hora_inicio, hora_fin) de la franja de 8hs que contiene la hora dada.
+ * La franja nocturna (22-06) cruza medianoche. */
+export function getFranjaActual(hour: number): { horaInicio: number; horaFin: number } {
+  if (hour >= 6 && hour < 14) return { horaInicio: 6, horaFin: 14 }
+  if (hour >= 14 && hour < 22) return { horaInicio: 14, horaFin: 22 }
+  return { horaInicio: 22, horaFin: 6 }
 }
