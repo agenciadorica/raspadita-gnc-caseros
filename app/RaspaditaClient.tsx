@@ -74,13 +74,13 @@ export default function RaspaditaClient() {
         <Image
           src="/logo.jpg"
           alt="GNC Caseros"
-          width={110}
-          height={100}
+          width={128}
+          height={116}
           className="object-contain rounded-full"
           priority
         />
-        <h1 className="text-lg font-extrabold text-brand-primary text-center">GNC Caseros</h1>
-        <p className="text-xs italic text-violet-300 text-center">Tu mejor opción</p>
+        <h1 className="text-xl font-extrabold text-brand-primary text-center">GNC Caseros</h1>
+        <p className="text-sm italic text-violet-300 text-center">Tu mejor opción</p>
       </header>
 
       {/* Main content */}
