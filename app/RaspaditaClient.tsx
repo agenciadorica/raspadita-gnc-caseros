@@ -78,21 +78,27 @@ export default function RaspaditaClient() {
 
   return (
     <div className="h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030] px-4 py-2 text-white">
-      {/* Header */}
-      <header className="w-full max-w-sm flex flex-col items-center gap-0.5 shrink-0">
+      {/* Header — logo con resplandor */}
+      <header className="w-full max-w-sm flex flex-col items-center gap-1 shrink-0 pt-1">
         <div className="relative flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-[#9b59b6] blur-2xl opacity-60 scale-110" />
+          <div className="absolute inset-0 rounded-full bg-[#9b59b6] blur-2xl opacity-70 scale-110" />
           <Image
             src="/logo.jpg"
             alt="GNC Caseros"
-            width={110}
-            height={100}
-            className="relative object-contain rounded-full ring-2 ring-violet-400/50"
+            width={150}
+            height={137}
+            className="relative object-contain rounded-full ring-2 ring-violet-400/60"
             priority
           />
         </div>
-        <h1 className="text-3xl font-extrabold text-white text-center">GNC Caseros</h1>
-        <p className="text-base italic text-violet-300 text-center">Tu mejor opción</p>
+        <h1 className="text-4xl font-extrabold text-center leading-tight">
+          <span className="text-white">GNC </span>
+          <span className="bg-gradient-to-r from-[#d8b4fe] to-[#a855f7] bg-clip-text text-transparent">
+            Caseros
+          </span>
+        </h1>
+        <p className="text-lg italic text-violet-300 text-center -mt-1">Tu mejor opción</p>
+        <div className="h-1 w-20 rounded-full bg-gradient-to-r from-[#c026d3] to-[#7c3aed] mt-1" />
       </header>
 
       {/* Main content */}
