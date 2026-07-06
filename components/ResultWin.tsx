@@ -6,7 +6,7 @@ interface ResultWinProps {
   codigo: string
 }
 
-const COLORS = ['#5B2D8E', '#FFD700', '#FFFFFF']
+const COLORS = ['#c026d3', '#7c3aed', '#FFD700', '#FFFFFF']
 
 interface Particle {
   x: number
@@ -97,16 +97,16 @@ export default function ResultWin({ codigo }: ResultWinProps) {
   }, [])
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-center gap-4 py-4 px-4 text-center animate-fade-in overflow-hidden rounded-2xl">
+    <div className="relative w-full flex flex-col items-center justify-center gap-4 py-4 px-4 text-center animate-fade-in overflow-hidden rounded-2xl bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030]">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       <div className="relative z-10 flex flex-col items-center gap-4">
         <div className="text-6xl">🏆</div>
-        <h2 className="text-2xl font-extrabold text-brand-primary leading-snug">
-          ¡Ganaste! La carga que acabás de hacer es gratis.
+        <h2 className="text-2xl font-extrabold text-white leading-snug">
+          <span className="text-[#FFD700]">¡Ganaste!</span> La carga que acabás de hacer es gratis.
         </h2>
-        <p className="text-gray-600 text-base">Mostrá este código al playero:</p>
-        <div className="bg-violet-50 border-4 border-brand-primary rounded-2xl px-8 py-5 shadow-lg">
-          <span className="font-mono text-4xl font-black text-brand-primary tracking-widest">{codigo}</span>
+        <p className="text-violet-200 text-base">Mostrá este código al playero:</p>
+        <div className="bg-violet-900/50 border-4 border-[#FFD700] rounded-2xl px-8 py-5 shadow-lg shadow-amber-500/30">
+          <span className="font-mono text-4xl font-black text-[#FFD700] tracking-widest">{codigo}</span>
         </div>
       </div>
     </div>

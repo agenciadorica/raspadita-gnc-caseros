@@ -121,9 +121,9 @@ export default function ScratchCard({ resultado, codigo, onReveal }: ScratchCard
         {resultado === 'ganador' ? (
           <>
             <span className="text-5xl mb-2">🏆</span>
-            <p className="text-white font-extrabold text-xl text-center px-4">¡GANASTE!</p>
+            <p className="text-[#FFD700] font-extrabold text-xl text-center px-4">¡GANASTE!</p>
             {codigo && (
-              <p className="text-white font-mono text-3xl font-black mt-2 tracking-widest">{codigo}</p>
+              <p className="text-[#FFD700] font-mono text-3xl font-black mt-2 tracking-widest">{codigo}</p>
             )}
           </>
         ) : (

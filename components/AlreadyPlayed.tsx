@@ -29,15 +29,15 @@ export default function AlreadyPlayed({ proximaVez }: AlreadyPlayedProps) {
   }, [proximaVez])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 py-8 px-4 text-center">
+    <div className="w-full flex flex-col items-center justify-center gap-6 py-8 px-4 text-center rounded-2xl bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030]">
       <div className="text-7xl">⏰</div>
-      <h2 className="text-3xl font-extrabold text-gray-700">Ya participaste.</h2>
+      <h2 className="text-3xl font-extrabold text-white">Ya participaste.</h2>
       {falta ? (
-        <p className="text-gray-500 text-xl">
-          Podés volver a jugar en <span className="font-bold text-brand-primary">{falta}</span>.
+        <p className="text-violet-200 text-xl">
+          Podés volver a jugar en <span className="font-bold text-[#FFD700]">{falta}</span>.
         </p>
       ) : (
-        <p className="text-gray-500 text-xl">¡Te esperamos en tu próxima carga!</p>
+        <p className="text-violet-200 text-xl">¡Te esperamos en tu próxima carga!</p>
       )}
     </div>
   )
