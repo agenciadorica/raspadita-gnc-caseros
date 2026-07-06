@@ -68,7 +68,7 @@ export default function RaspaditaClient() {
   }
 
   return (
-    <div className="h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-violet-50 to-white px-4 py-2">
+    <div className="h-dvh flex flex-col items-center justify-between overflow-hidden bg-[#dac9df] px-4 py-2">
       {/* Header */}
       <header className="w-full max-w-sm flex flex-col items-center gap-0.5 shrink-0">
         <Image
