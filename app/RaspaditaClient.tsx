@@ -22,6 +22,7 @@ interface PlayResult {
   status: string
   resultado?: 'ganador' | 'perdedor'
   codigo?: string | null
+  proxima_vez?: string
 }
 
 export default function RaspaditaClient() {
@@ -46,6 +47,7 @@ export default function RaspaditaClient() {
       const data: PlayResult = await res.json()
 
       if (data.status === 'already_played') {
+        setPlayResult(data)
         setAppState('already_played')
       } else if (data.status === 'inactive') {
         setAppState('inactive')
@@ -78,6 +80,7 @@ export default function RaspaditaClient() {
           priority
         />
         <h1 className="text-lg font-extrabold text-brand-primary text-center">GNC Caseros</h1>
+        <p className="text-xs italic text-violet-300 text-center">Tu mejor opción</p>
       </header>
 
       {/* Main content */}
@@ -125,7 +128,7 @@ export default function RaspaditaClient() {
 
         {appState === 'lose' && <ResultLose />}
 
-        {appState === 'already_played' && <AlreadyPlayed />}
+        {appState === 'already_played' && <AlreadyPlayed proximaVez={playResult?.proxima_vez} />}
 
         {appState === 'inactive' && (
           <div className="flex flex-col items-center gap-4 text-center">

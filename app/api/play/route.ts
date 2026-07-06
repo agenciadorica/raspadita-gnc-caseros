@@ -24,16 +24,21 @@ export async function POST(request: NextRequest) {
   const db = createServiceClient()
   const hoy = getArgentinaDateString()
 
-  // 1 jugada por dispositivo por día
+  // 1 jugada por dispositivo cada 8 horas
+  const ochoHorasMs = 8 * 60 * 60 * 1000
+  const desde = new Date(Date.now() - ochoHorasMs).toISOString()
   const { data: existing } = await db
     .from('jugadas')
-    .select('id')
+    .select('created_at')
     .eq('fingerprint', fingerprint)
-    .eq('fecha', hoy)
+    .gte('created_at', desde)
+    .order('created_at', { ascending: false })
+    .limit(1)
     .maybeSingle()
 
   if (existing) {
-    return Response.json({ status: 'already_played' })
+    const proximaVez = new Date(new Date(existing.created_at).getTime() + ochoHorasMs).toISOString()
+    return Response.json({ status: 'already_played', proxima_vez: proximaVez })
   }
 
   const { data: config } = await db
