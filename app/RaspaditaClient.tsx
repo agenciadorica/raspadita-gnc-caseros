@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { getFingerprint } from '@/lib/fingerprint'
+import HomeScreen from '@/components/HomeScreen'
 import ScratchCard from '@/components/ScratchCard'
 import ResultWin from '@/components/ResultWin'
 import ResultLose from '@/components/ResultLose'
@@ -26,17 +27,21 @@ interface PlayResult {
 }
 
 export default function RaspaditaClient() {
+  const [vista, setVista] = useState<'inicio' | 'juego'>('inicio')
   const [appState, setAppState] = useState<AppState>('loading')
   const [playResult, setPlayResult] = useState<PlayResult | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  useEffect(() => {
-    setAppState('ready')
-  }, [])
+  function handleStart() {
+    if (isPlaying) return
+    setVista('juego')
+    handlePlay()
+  }
 
   async function handlePlay() {
     if (isPlaying) return
     setIsPlaying(true)
+    setAppState('loading')
     try {
       const fp = await getFingerprint()
       const res = await fetch('/api/play', {
@@ -67,6 +72,10 @@ export default function RaspaditaClient() {
     setAppState(playResult.resultado === 'ganador' ? 'win' : 'lose')
   }
 
+  if (vista === 'inicio') {
+    return <HomeScreen onPlay={handleStart} isPlaying={isPlaying} />
+  }
+
   return (
     <div className="h-dvh flex flex-col items-center justify-between overflow-hidden bg-[#9ce0db] px-4 py-2">
       {/* Header */}
@@ -89,23 +98,6 @@ export default function RaspaditaClient() {
           <div className="flex flex-col items-center gap-4">
             <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin" />
             <p className="text-gray-500">Cargando...</p>
-          </div>
-        )}
-
-        {appState === 'ready' && (
-          <div className="flex flex-col items-center gap-4 w-full animate-fade-in">
-            <div className="bg-white rounded-2xl shadow-lg p-4 w-full text-center border border-violet-100">
-              <p className="text-lg font-bold text-gray-800 leading-snug">
-                ¡Raspá y descubrí si ganaste la carga que acabás de hacer, gratis!
-              </p>
-            </div>
-            <button
-              onClick={handlePlay}
-              disabled={isPlaying}
-              className="w-full py-4 rounded-2xl bg-brand-primary hover:bg-brand-primary-dark active:scale-95 text-white font-extrabold text-xl shadow-lg transition-all disabled:opacity-60"
-            >
-              {isPlaying ? 'Preparando...' : '¡Jugar ahora!'}
-            </button>
           </div>
         )}
 
@@ -142,7 +134,7 @@ export default function RaspaditaClient() {
             <div className="text-6xl">⚠️</div>
             <p className="text-gray-600 text-xl font-semibold">Algo salió mal. Intentá de nuevo.</p>
             <button
-              onClick={() => { setAppState('ready'); setIsPlaying(false) }}
+              onClick={() => { setIsPlaying(false); handlePlay() }}
               className="px-6 py-3 rounded-xl bg-brand-primary text-white font-bold"
             >
               Reintentar
