@@ -70,17 +70,17 @@ export default function RaspaditaClient() {
   return (
     <div className="h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-violet-50 to-white px-4 py-3">
       {/* Header */}
-      <header className="w-full max-w-sm flex flex-col items-center gap-1 shrink-0">
+      <header className="w-full max-w-sm flex flex-col items-center gap-0.5 shrink-0">
         <Image
           src="/logo.jpg"
           alt="GNC Caseros"
-          width={128}
-          height={116}
+          width={150}
+          height={136}
           className="object-contain rounded-full"
           priority
         />
-        <h1 className="text-xl font-extrabold text-brand-primary text-center">GNC Caseros</h1>
-        <p className="text-sm italic text-violet-300 text-center">Tu mejor opción</p>
+        <h1 className="text-2xl font-extrabold text-brand-primary text-center">GNC Caseros</h1>
+        <p className="text-base italic text-violet-300 text-center">Tu mejor opción</p>
       </header>
 
       {/* Main content */}
