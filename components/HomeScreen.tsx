@@ -132,9 +132,9 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
       </header>
 
       {/* Cuadro de descripción */}
-      <section className="w-full max-w-sm flex items-center gap-3 rounded-3xl border border-violet-500/30 bg-violet-950/40 px-4 py-4 shadow-lg shadow-violet-900/40 shrink-0">
+      <section className="w-full max-w-sm flex flex-1 items-center gap-3 rounded-3xl border border-violet-500/30 bg-violet-950/40 px-4 py-6 shadow-lg shadow-violet-900/40 my-2">
         <span className="text-5xl leading-none shrink-0" aria-hidden>⛽</span>
-        <p className="text-base sm:text-lg leading-snug text-violet-50">
+        <p className="text-lg sm:text-xl leading-snug text-violet-50">
           <span className="font-bold text-white">¡Raspá</span> y descubrí si ganaste la carga que
           acabás de hacer,{' '}
           <span className="font-bold italic text-amber-400">gratis!</span>
@@ -167,10 +167,10 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
         ].map((b) => (
           <div
             key={b.label}
-            className="flex flex-col items-center gap-1.5 rounded-2xl border border-violet-500/20 bg-violet-950/40 px-2 py-3 text-center"
+            className="flex flex-col items-center gap-1 rounded-2xl border border-violet-500/20 bg-violet-950/40 px-2 py-1.5 text-center"
           >
-            <span className="text-2xl leading-none" aria-hidden>{b.icon}</span>
-            <span className="text-[11px] leading-tight text-violet-100">{b.label}</span>
+            <span className="text-base leading-none" aria-hidden>{b.icon}</span>
+            <span className="text-[10px] leading-tight text-violet-100">{b.label}</span>
           </div>
         ))}
       </div>
