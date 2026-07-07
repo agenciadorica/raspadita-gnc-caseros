@@ -9,12 +9,12 @@ interface HomeScreenProps {
 
 // Monedas doradas: posición (costados/parte superior, sin tapar el logo) y timing propio
 const COINS = [
-  { top: '6%', left: '8%', size: 46, dur: 4.2, delay: 0, drift: '-8deg' },
-  { top: '4%', left: '82%', size: 42, dur: 5.1, delay: 0.6, drift: '10deg' },
-  { top: '18%', left: '3%', size: 40, dur: 4.7, delay: 1.1, drift: '-6deg' },
-  { top: '16%', left: '88%', size: 48, dur: 5.6, delay: 0.3, drift: '9deg' },
-  { top: '28%', left: '12%', size: 38, dur: 4.4, delay: 1.5, drift: '-11deg' },
-  { top: '26%', left: '80%', size: 44, dur: 5.3, delay: 0.9, drift: '7deg' },
+  { top: '6%', left: '8%', size: 30, dur: 4.2, delay: 0, drift: '-8deg' },
+  { top: '4%', left: '82%', size: 27, dur: 5.1, delay: 0.6, drift: '10deg' },
+  { top: '18%', left: '3%', size: 26, dur: 4.7, delay: 1.1, drift: '-6deg' },
+  { top: '16%', left: '88%', size: 32, dur: 5.6, delay: 0.3, drift: '9deg' },
+  { top: '28%', left: '12%', size: 24, dur: 4.4, delay: 1.5, drift: '-11deg' },
+  { top: '26%', left: '80%', size: 29, dur: 5.3, delay: 0.9, drift: '7deg' },
 ]
 
 // Confeti decorativo: puntos, estrellas y líneas dispersas por el fondo
