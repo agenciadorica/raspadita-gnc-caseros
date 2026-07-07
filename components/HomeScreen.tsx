@@ -39,13 +39,16 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
         {CONFETTI.map((c, i) => (
           <span
             key={`c-${i}`}
-            className="confetti"
-            style={{
-              top: c.top,
-              left: c.left,
-              animationDuration: `${c.dur}s`,
-              animationDelay: `${c.delay}s`,
-            }}
+            className="confetti-float absolute block"
+            style={
+              {
+                top: c.top,
+                left: c.left,
+                '--dur': `${c.dur}s`,
+                '--rot': c.kind === 'line' ? '45deg' : '15deg',
+                animationDelay: `${c.delay}s`,
+              } as React.CSSProperties
+            }
           >
             {c.kind === 'dot' && (
               <span
@@ -55,7 +58,7 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
             )}
             {c.kind === 'line' && (
               <span
-                className="block rotate-45 rounded-full"
+                className="block rounded-full"
                 style={{ width: c.size, height: 3, background: c.color, opacity: 0.6 }}
               />
             )}
@@ -73,90 +76,37 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
         {COINS.map((coin, i) => (
           <span
             key={`coin-${i}`}
-            className="coin"
+            className="coin-float absolute flex items-center justify-center rounded-full"
             style={
               {
                 top: coin.top,
                 left: coin.left,
                 width: coin.size,
                 height: coin.size,
-                animationDuration: `${coin.dur}s`,
+                '--dur': `${coin.dur}s`,
+                '--rot': coin.drift,
                 animationDelay: `${coin.delay}s`,
-                '--drift': coin.drift,
+                background:
+                  'radial-gradient(circle at 32% 28%, #fff3b0 0%, #ffd700 45%, #e6a700 100%)',
+                border: '2px solid #f2c200',
+                boxShadow:
+                  'inset 0 2px 3px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(140,90,0,0.4), 0 3px 8px rgba(0,0,0,0.35)',
               } as React.CSSProperties
             }
           >
-            <span className="coin-face" style={{ fontSize: coin.size * 0.5 }}>
+            <span
+              className="font-black leading-none"
+              style={{
+                fontSize: coin.size * 0.5,
+                color: '#8a5a00',
+                textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+              }}
+            >
               $
             </span>
           </span>
         ))}
       </div>
-
-      <style jsx>{`
-        @keyframes coinFloat {
-          0% {
-            transform: translateY(0) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-14px) rotate(var(--drift, 8deg));
-          }
-          100% {
-            transform: translateY(0) rotate(0deg);
-          }
-        }
-        @keyframes confettiFloat {
-          0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0.35;
-          }
-          50% {
-            transform: translateY(-10px) rotate(15deg);
-            opacity: 0.9;
-          }
-          100% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0.35;
-          }
-        }
-        .coin {
-          position: absolute;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 9999px;
-          background: radial-gradient(circle at 32% 28%, #fff3b0 0%, #ffd700 45%, #e6a700 100%);
-          box-shadow:
-            inset 0 2px 3px rgba(255, 255, 255, 0.6),
-            inset 0 -2px 4px rgba(140, 90, 0, 0.4),
-            0 3px 8px rgba(0, 0, 0, 0.35);
-          border: 2px solid #f2c200;
-          animation-name: coinFloat;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-          will-change: transform;
-        }
-        .coin-face {
-          font-weight: 900;
-          line-height: 1;
-          color: #8a5a00;
-          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-        }
-        .confetti {
-          position: absolute;
-          display: block;
-          animation-name: confettiFloat;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-          will-change: transform, opacity;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .coin,
-          .confetti {
-            animation: none;
-          }
-        }
-      `}</style>
 
       {/* Header — logo con resplandor */}
       <header className="w-full max-w-sm flex flex-col items-center gap-1 shrink-0 pt-1">
