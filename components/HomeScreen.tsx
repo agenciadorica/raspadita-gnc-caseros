@@ -134,7 +134,7 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
       {/* Cuadro de descripción */}
       <section className="w-full max-w-sm flex flex-1 items-center gap-3 rounded-3xl border border-violet-500/30 bg-violet-950/40 px-4 py-6 shadow-lg shadow-violet-900/40 my-2">
         <span className="text-5xl leading-none shrink-0" aria-hidden>⛽</span>
-        <p className="flex h-full flex-col justify-center py-4 text-2xl leading-loose text-violet-50">
+        <p className="text-2xl sm:text-3xl leading-snug text-violet-50">
           <span className="font-bold text-white">¡Raspá</span> y descubrí si ganaste la carga que
           acabás de hacer,{' '}
           <span className="font-bold italic text-amber-400">gratis!</span>
