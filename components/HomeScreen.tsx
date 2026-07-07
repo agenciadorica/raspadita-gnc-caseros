@@ -7,9 +7,157 @@ interface HomeScreenProps {
   isPlaying: boolean
 }
 
+// Monedas doradas: posición (costados/parte superior, sin tapar el logo) y timing propio
+const COINS = [
+  { top: '6%', left: '8%', size: 46, dur: 4.2, delay: 0, drift: '-8deg' },
+  { top: '4%', left: '82%', size: 42, dur: 5.1, delay: 0.6, drift: '10deg' },
+  { top: '18%', left: '3%', size: 40, dur: 4.7, delay: 1.1, drift: '-6deg' },
+  { top: '16%', left: '88%', size: 48, dur: 5.6, delay: 0.3, drift: '9deg' },
+  { top: '28%', left: '12%', size: 38, dur: 4.4, delay: 1.5, drift: '-11deg' },
+  { top: '26%', left: '80%', size: 44, dur: 5.3, delay: 0.9, drift: '7deg' },
+]
+
+// Confeti decorativo: puntos, estrellas y líneas dispersas por el fondo
+const CONFETTI = [
+  { top: '12%', left: '30%', kind: 'star', color: '#FFD700', size: 14, dur: 6, delay: 0 },
+  { top: '40%', left: '6%', kind: 'dot', color: '#e879f9', size: 8, dur: 5, delay: 0.8 },
+  { top: '52%', left: '92%', kind: 'line', color: '#c084fc', size: 20, dur: 7, delay: 1.2 },
+  { top: '66%', left: '10%', kind: 'star', color: '#ffffff', size: 12, dur: 6.5, delay: 0.4 },
+  { top: '72%', left: '86%', kind: 'dot', color: '#FFD700', size: 7, dur: 5.5, delay: 1.6 },
+  { top: '84%', left: '22%', kind: 'line', color: '#f0abfc', size: 18, dur: 6.2, delay: 0.2 },
+  { top: '58%', left: '48%', kind: 'dot', color: '#ffffff', size: 6, dur: 5.8, delay: 2 },
+  { top: '90%', left: '70%', kind: 'star', color: '#e879f9', size: 13, dur: 6.8, delay: 1 },
+  { top: '46%', left: '68%', kind: 'dot', color: '#c084fc', size: 8, dur: 5.2, delay: 0.6 },
+  { top: '78%', left: '52%', kind: 'line', color: '#FFD700', size: 16, dur: 7.4, delay: 1.8 },
+]
+
 export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
   return (
-    <div className="h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030] px-5 py-4 text-white">
+    <div className="relative h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030] px-5 py-4 text-white">
+      {/* Capa decorativa: confeti + monedas flotantes (detrás del contenido, sin capturar clics) */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+        {CONFETTI.map((c, i) => (
+          <span
+            key={`c-${i}`}
+            className="confetti"
+            style={{
+              top: c.top,
+              left: c.left,
+              animationDuration: `${c.dur}s`,
+              animationDelay: `${c.delay}s`,
+            }}
+          >
+            {c.kind === 'dot' && (
+              <span
+                className="block rounded-full"
+                style={{ width: c.size, height: c.size, background: c.color, opacity: 0.7 }}
+              />
+            )}
+            {c.kind === 'line' && (
+              <span
+                className="block rotate-45 rounded-full"
+                style={{ width: c.size, height: 3, background: c.color, opacity: 0.6 }}
+              />
+            )}
+            {c.kind === 'star' && (
+              <svg width={c.size} height={c.size} viewBox="0 0 24 24" style={{ opacity: 0.8 }}>
+                <path
+                  fill={c.color}
+                  d="M12 2l2.6 6.6L21.4 9l-5.2 4.6L17.9 21 12 17.3 6.1 21l1.7-7.4L2.6 9l6.8-.4z"
+                />
+              </svg>
+            )}
+          </span>
+        ))}
+
+        {COINS.map((coin, i) => (
+          <span
+            key={`coin-${i}`}
+            className="coin"
+            style={
+              {
+                top: coin.top,
+                left: coin.left,
+                width: coin.size,
+                height: coin.size,
+                animationDuration: `${coin.dur}s`,
+                animationDelay: `${coin.delay}s`,
+                '--drift': coin.drift,
+              } as React.CSSProperties
+            }
+          >
+            <span className="coin-face" style={{ fontSize: coin.size * 0.5 }}>
+              $
+            </span>
+          </span>
+        ))}
+      </div>
+
+      <style jsx>{`
+        @keyframes coinFloat {
+          0% {
+            transform: translateY(0) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-14px) rotate(var(--drift, 8deg));
+          }
+          100% {
+            transform: translateY(0) rotate(0deg);
+          }
+        }
+        @keyframes confettiFloat {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.35;
+          }
+          50% {
+            transform: translateY(-10px) rotate(15deg);
+            opacity: 0.9;
+          }
+          100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.35;
+          }
+        }
+        .coin {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 9999px;
+          background: radial-gradient(circle at 32% 28%, #fff3b0 0%, #ffd700 45%, #e6a700 100%);
+          box-shadow:
+            inset 0 2px 3px rgba(255, 255, 255, 0.6),
+            inset 0 -2px 4px rgba(140, 90, 0, 0.4),
+            0 3px 8px rgba(0, 0, 0, 0.35);
+          border: 2px solid #f2c200;
+          animation-name: coinFloat;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          will-change: transform;
+        }
+        .coin-face {
+          font-weight: 900;
+          line-height: 1;
+          color: #8a5a00;
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        .confetti {
+          position: absolute;
+          display: block;
+          animation-name: confettiFloat;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          will-change: transform, opacity;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .coin,
+          .confetti {
+            animation: none;
+          }
+        }
+      `}</style>
+
       {/* Header — logo con resplandor */}
       <header className="w-full max-w-sm flex flex-col items-center gap-1 shrink-0 pt-1">
         <div className="relative flex items-center justify-center">
