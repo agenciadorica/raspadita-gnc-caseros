@@ -33,7 +33,7 @@ const CONFETTI = [
 
 export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
   return (
-    <div className="relative h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030] px-5 py-4 text-white">
+    <div className="relative isolate h-dvh flex flex-col items-center justify-between overflow-hidden bg-gradient-to-b from-[#1a0030] via-[#2d0057] to-[#1a0030] px-5 py-4 text-white">
       {/* Capa decorativa: confeti + monedas flotantes (detrás del contenido, sin capturar clics) */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
         {CONFETTI.map((c, i) => (
