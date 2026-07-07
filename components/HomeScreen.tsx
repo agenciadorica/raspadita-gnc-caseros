@@ -87,10 +87,10 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
                 '--rot': coin.drift,
                 animationDelay: `${coin.delay}s`,
                 background:
-                  'radial-gradient(circle at 32% 28%, #fff3b0 0%, #ffd700 45%, #e6a700 100%)',
-                border: '2px solid #f2c200',
+                  'radial-gradient(circle at 30% 25%, #ffffff 0%, #fff3b0 25%, #ffd700 55%, #e6a700 100%)',
+                border: '2px solid #FFD700',
                 boxShadow:
-                  'inset 0 2px 3px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(140,90,0,0.4), 0 3px 8px rgba(0,0,0,0.35)',
+                  'inset 0 2px 3px rgba(255,255,255,0.7), inset 0 -2px 4px rgba(140,90,0,0.4), 0 0 12px rgba(255, 215, 0, 0.8), 0 4px 8px rgba(0,0,0,0.4)',
               } as React.CSSProperties
             }
           >
@@ -111,7 +111,8 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
       {/* Header — logo con resplandor */}
       <header className="w-full max-w-sm flex flex-col items-center gap-1 shrink-0 pt-1">
         <div className="relative flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-[#9b59b6] blur-2xl opacity-70 scale-110" />
+          <div className="absolute inset-0 rounded-full bg-[#a855f7] blur-3xl opacity-90 scale-150" />
+          <div className="absolute inset-0 rounded-full bg-[#c026d3] blur-2xl opacity-80 scale-110" />
           <Image
             src="/logo.jpg"
             alt="GNC Caseros"
@@ -132,7 +133,10 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
       </header>
 
       {/* Cuadro de descripción */}
-      <section className="w-full max-w-sm flex shrink-0 items-center gap-3 rounded-3xl border border-violet-500/30 bg-violet-950/40 px-4 py-3 shadow-lg shadow-violet-900/40 my-2">
+      <section
+        className="w-full max-w-sm flex shrink-0 items-center gap-3 rounded-3xl border border-violet-500/50 bg-violet-950/40 px-4 py-3 my-2"
+        style={{ boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' }}
+      >
         <span className="text-5xl leading-none shrink-0" aria-hidden>⛽</span>
         <p className="text-2xl sm:text-3xl leading-snug text-violet-50">
           <span className="font-bold text-white">¡Raspá</span> y descubrí si ganaste la carga que
@@ -145,7 +149,8 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
       <button
         onClick={onPlay}
         disabled={isPlaying}
-        className="w-full max-w-sm flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c026d3] to-[#7c3aed] py-4 text-xl font-extrabold text-white shadow-lg shadow-fuchsia-600/50 transition-all active:scale-95 disabled:opacity-60 shrink-0"
+        className="w-full max-w-sm flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#c026d3] to-[#7c3aed] py-4 text-xl font-extrabold text-white transition-all active:scale-95 disabled:opacity-60 shrink-0"
+        style={{ boxShadow: '0 0 25px rgba(192, 38, 211, 0.7), 0 0 50px rgba(124, 58, 237, 0.4)' }}
       >
         {isPlaying ? (
           'Preparando...'
@@ -168,6 +173,7 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
           <div
             key={b.label}
             className="flex flex-col items-center gap-1 rounded-2xl border border-violet-500/20 bg-violet-950/40 px-2 py-1.5 text-center"
+            style={{ boxShadow: '0 0 10px rgba(139, 92, 246, 0.2)' }}
           >
             <span className="text-base leading-none" aria-hidden>{b.icon}</span>
             <span className="text-[10px] leading-tight text-violet-100">{b.label}</span>
