@@ -138,8 +138,8 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
         style={{ boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' }}
       >
         <span className="text-5xl leading-none shrink-0" aria-hidden>⛽</span>
-        <p className="text-2xl sm:text-3xl leading-snug text-violet-50">
-          <span className="font-bold text-white">¡¡Raspá</span> y descubrí si
+        <p className="text-2xl sm:text-3xl leading-snug text-white text-center">
+          <span className="font-bold text-[#FFD700]">¡Raspá</span> y descubrí si
           ganaste!
         </p>
       </section>
