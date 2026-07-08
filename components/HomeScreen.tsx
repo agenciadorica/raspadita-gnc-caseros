@@ -139,9 +139,8 @@ export default function HomeScreen({ onPlay, isPlaying }: HomeScreenProps) {
       >
         <span className="text-5xl leading-none shrink-0" aria-hidden>⛽</span>
         <p className="text-2xl sm:text-3xl leading-snug text-violet-50">
-          <span className="font-bold text-white">¡Raspá</span> y descubrí si ganaste la carga que
-          acabás de hacer,{' '}
-          <span className="font-bold italic text-amber-400">gratis!</span>
+          <span className="font-bold text-white">¡¡Raspá</span> y descubrí si
+          ganaste!
         </p>
       </section>
 

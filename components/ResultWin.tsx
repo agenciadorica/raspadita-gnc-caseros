@@ -102,7 +102,7 @@ export default function ResultWin({ codigo }: ResultWinProps) {
       <div className="relative z-10 flex flex-col items-center gap-4">
         <div className="text-6xl">🏆</div>
         <h2 className="text-2xl font-extrabold text-white leading-snug">
-          <span className="text-[#FFD700]">¡Ganaste!</span> La carga que acabás de hacer es gratis.
+          <span className="text-[#FFD700]">¡Ganaste!</span>
         </h2>
         <p className="text-violet-200 text-base">Mostrá este código al playero:</p>
         <div className="bg-violet-900/50 border-4 border-[#FFD700] rounded-2xl px-8 py-5 shadow-lg shadow-amber-500/30">
