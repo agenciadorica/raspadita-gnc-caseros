@@ -24,9 +24,9 @@ export async function POST(request: NextRequest) {
   const db = createServiceClient()
   const hoy = getArgentinaDateString()
 
-  // 1 jugada por dispositivo cada 8 horas
-  const ochoHorasMs = 8 * 60 * 60 * 1000
-  const desde = new Date(Date.now() - ochoHorasMs).toISOString()
+  // 1 jugada por dispositivo cada 5 horas
+  const cincoHorasMs = 5 * 60 * 60 * 1000
+  const desde = new Date(Date.now() - cincoHorasMs).toISOString()
   const { data: existing } = await db
     .from('jugadas')
     .select('created_at')
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     .maybeSingle()
 
   if (existing) {
-    const proximaVez = new Date(new Date(existing.created_at).getTime() + ochoHorasMs).toISOString()
+    const proximaVez = new Date(new Date(existing.created_at).getTime() + cincoHorasMs).toISOString()
     return Response.json({ status: 'already_played', proxima_vez: proximaVez })
   }
 
