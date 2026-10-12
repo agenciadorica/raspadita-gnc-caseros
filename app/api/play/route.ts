@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
   const { horaInicio, horaFin } = getFranjaActual(getArgentinaHour())
   const { data: franja } = await db
     .from('franjas_horarias')
-    .select('id, premios_cupo, activa')
+    .select('id, premios_cupo, activa, jugadas_minimas_por_premio, minutos_minimos_por_premio, hora_inicio, hora_fin')
     .eq('hora_inicio', horaInicio)
     .eq('hora_fin', horaFin)
     .maybeSingle()
@@ -71,26 +71,67 @@ export async function POST(request: NextRequest) {
       .eq('franja_id', franja.id)
       .eq('gano', true)
 
-    if ((premiosEntregados ?? 0) < franja.premios_cupo) {
-      const { count: jugadasSinPremio } = await db
+    const premiosYaEntregados = premiosEntregados ?? 0
+
+    if (premiosYaEntregados < franja.premios_cupo) {
+      // Calcular minutos transcurridos desde inicio de franja
+      const ahora = new Date()
+      const horaArgentina = getArgentinaHour(ahora)
+      const minutosArgentina = parseInt(
+        new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Argentina/Buenos_Aires',
+          minute: '2-digit',
+        }).format(ahora),
+        10
+      )
+      let minutosDesdeInicio: number
+      if (franja.hora_inicio <= franja.hora_fin) {
+        minutosDesdeInicio = (horaArgentina - franja.hora_inicio) * 60 + minutosArgentina
+      } else {
+        const horasDesdeInicio = horaArgentina >= franja.hora_inicio
+          ? horaArgentina - franja.hora_inicio
+          : 24 - franja.hora_inicio + horaArgentina
+        minutosDesdeInicio = horasDesdeInicio * 60 + minutosArgentina
+      }
+
+      // Jugadas totales en la franja hoy
+      const { count: jugadasEnFranja } = await db
         .from('jugadas')
         .select('*', { count: 'exact', head: true })
         .eq('fecha', hoy)
         .eq('franja_id', franja.id)
-        .eq('gano', false)
 
-      const { data: configSorteo } = await db
-        .from('config_sorteo')
-        .select('probabilidad_base, incremento_por_jugada')
-        .eq('id', 1)
-        .single()
+      const jugadasTotales = jugadasEnFranja ?? 0
 
-      const base = configSorteo?.probabilidad_base ?? 0.05
-      const incremento = configSorteo?.incremento_por_jugada ?? 0.05
-      const probabilidad = Math.min(0.95, base + (jugadasSinPremio ?? 0) * incremento)
+      // Umbrales para el próximo premio
+      const proximoPremioN = premiosYaEntregados + 1
+      const jugadasMinimas = (franja.jugadas_minimas_por_premio ?? 0) * proximoPremioN
+      const minutosMinimos = (franja.minutos_minimos_por_premio ?? 0) * proximoPremioN
 
-      gano = Math.random() < probabilidad
-      codigoPremio = gano ? generateCode() : null
+      const cumpleJugadas = jugadasTotales >= jugadasMinimas
+      const cumpleTiempo = minutosDesdeInicio >= minutosMinimos
+
+      if (cumpleJugadas && cumpleTiempo) {
+        const { count: jugadasSinPremio } = await db
+          .from('jugadas')
+          .select('*', { count: 'exact', head: true })
+          .eq('fecha', hoy)
+          .eq('franja_id', franja.id)
+          .eq('gano', false)
+
+        const { data: configSorteo } = await db
+          .from('config_sorteo')
+          .select('probabilidad_base, incremento_por_jugada')
+          .eq('id', 1)
+          .single()
+
+        const base = configSorteo?.probabilidad_base ?? 0.05
+        const incremento = configSorteo?.incremento_por_jugada ?? 0.05
+        const probabilidad = Math.min(0.95, base + (jugadasSinPremio ?? 0) * incremento)
+
+        gano = Math.random() < probabilidad
+        codigoPremio = gano ? generateCode() : null
+      }
     }
   }
 
