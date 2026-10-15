@@ -49,9 +49,12 @@ export default function RaspaditaClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fingerprint: fp }),
       })
-      const data: PlayResult = await res.json()
+      const data: PlayResult & { error?: string } = await res.json()
 
-      if (data.status === 'already_played') {
+      if (!res.ok || data.error) {
+        setAppState('error')
+        setIsPlaying(false)
+      } else if (data.status === 'already_played') {
         setPlayResult(data)
         setAppState('already_played')
       } else if (data.status === 'inactive') {
@@ -61,9 +64,11 @@ export default function RaspaditaClient() {
         setAppState('scratching')
       } else {
         setAppState('error')
+        setIsPlaying(false)
       }
     } catch {
       setAppState('error')
+      setIsPlaying(false)
     }
   }
 
@@ -141,9 +146,9 @@ export default function RaspaditaClient() {
         {appState === 'error' && (
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="text-6xl">⚠️</div>
-            <p className="text-violet-100 text-xl font-semibold">Algo salió mal. Intentá de nuevo.</p>
+            <p className="text-violet-100 text-xl font-semibold">Hubo un error, por favor intentá de nuevo</p>
             <button
-              onClick={() => { setIsPlaying(false); handlePlay() }}
+              onClick={handlePlay}
               className="rounded-full bg-gradient-to-r from-[#c026d3] to-[#7c3aed] px-8 py-3 text-white font-bold shadow-lg shadow-fuchsia-600/40 active:scale-95 transition-all"
             >
               Reintentar
