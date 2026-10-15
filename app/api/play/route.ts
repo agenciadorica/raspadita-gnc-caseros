@@ -60,6 +60,12 @@ export async function POST(request: NextRequest) {
     .eq('hora_fin', horaFin)
     .maybeSingle()
 
+  // Fecha en que empezó la franja actual: la nocturna (22-06) de madrugada empezó ayer
+  const horaActual = getArgentinaHour()
+  const fechaFranja = (franja?.hora_inicio === 22 && horaActual < 6)
+    ? getArgentinaDateString(new Date(Date.now() - 24 * 60 * 60 * 1000))
+    : hoy
+
   let gano = false
   let codigoPremio: string | null = null
 
@@ -67,7 +73,7 @@ export async function POST(request: NextRequest) {
     const { count: premiosEntregados } = await db
       .from('jugadas')
       .select('*', { count: 'exact', head: true })
-      .eq('fecha', hoy)
+      .eq('fecha', fechaFranja)
       .eq('franja_id', franja.id)
       .eq('gano', true)
 
@@ -98,7 +104,7 @@ export async function POST(request: NextRequest) {
       const { count: jugadasEnFranja } = await db
         .from('jugadas')
         .select('*', { count: 'exact', head: true })
-        .eq('fecha', hoy)
+        .eq('fecha', fechaFranja)
         .eq('franja_id', franja.id)
 
       const jugadasTotales = jugadasEnFranja ?? 0
@@ -115,7 +121,7 @@ export async function POST(request: NextRequest) {
         const { count: jugadasSinPremio } = await db
           .from('jugadas')
           .select('*', { count: 'exact', head: true })
-          .eq('fecha', hoy)
+          .eq('fecha', fechaFranja)
           .eq('franja_id', franja.id)
           .eq('gano', false)
 
@@ -137,7 +143,7 @@ export async function POST(request: NextRequest) {
 
   const { error } = await db.from('jugadas').insert({
     fingerprint,
-    fecha: hoy,
+    fecha: fechaFranja,
     franja_id: franja?.id ?? null,
     gano,
     codigo_premio: codigoPremio,
