@@ -131,8 +131,8 @@ export async function POST(request: NextRequest) {
           .eq('id', 1)
           .single()
 
-        const base = configSorteo?.probabilidad_base ?? 0.05
-        const incremento = configSorteo?.incremento_por_jugada ?? 0.05
+        const base = parseFloat(configSorteo?.probabilidad_base ?? '0.05')
+        const incremento = parseFloat(configSorteo?.incremento_por_jugada ?? '0.05')
         const probabilidad = Math.min(0.95, base + (jugadasSinPremio ?? 0) * incremento)
 
         gano = Math.random() < probabilidad
